@@ -1,6 +1,9 @@
 {
   "compilerOptions": {
-    "outDir": "build/"
+    "outDir": "build/",
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "noImplicitAny": false,
   },
   "files": [
     "src/index.ts",

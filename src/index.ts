@@ -1,20 +1,30 @@
-import { initStrip, RgbColour, rgbToInt } from './ledstrip';
+import { initStrip } from './ledstrip';
+import { bounceFunction } from './ledstrip/bounce';
+import { RgbColour } from './ledstrip/util';
 
 const args = process.argv.slice(2);
-const leds = parseInt(args[3] || '300');
 const colour: RgbColour = {
   red: parseInt(args[0] || '0'),
   green: parseInt(args[1] || '0'),
   blue: parseInt(args[2] || '0'),
 }
+const ledCount = parseInt(args[3] || '300');
+const animInterval = parseInt(args[4] || '150');
 
 const ledStrip = initStrip({
-  leds,
+  leds: ledCount,
   strip: 'grb'
 });
 
-const pixels = new Uint32Array(leds);
-const colourInt = rgbToInt(colour);
-const colourPixels = pixels.map(() => colourInt);
+// const solidColour = () => {
+//   const pixels = new Uint32Array(ledCount);
+//   const colourInt = rgbToInt(colour);
+//   return pixels.map(() => colourInt);
+// }
 
-ledStrip.render(colourPixels);
+const bounce = bounceFunction(ledCount, colour, 20);
+
+setInterval(() => {
+  ledStrip.render(bounce());
+}, animInterval); // tadaa
+
