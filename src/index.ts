@@ -1,51 +1,20 @@
-import * as ws281x from 'rpi-ws281x';
+import { initStrip, RgbColour, rgbToInt } from './ledstrip';
 
-type RgbColour = {
-  red: number;
-  green: number;
-  blue: number;
+const args = process.argv.slice(2);
+const leds = parseInt(args[3] || '300');
+const colour: RgbColour = {
+  red: parseInt(args[0] || '0'),
+  green: parseInt(args[1] || '0'),
+  blue: parseInt(args[2] || '0'),
 }
 
-const initStrip = (options: {}) => {
-  // const ledStrip = new ws281x();
-  ws281x.configure(options);
-
-  return ws281x;
-}
-
-const rgbToInt = (colour: RgbColour) => {
-  const {
-    red,
-    green,
-    blue,
-  } = colour;
-
-  return (red << 16) | (green << 8)| blue;
-}
-
-const main = (opts: {leds: number, colour: RgbColour}) => {
-  const {
-    leds = 10,
-    colour
-  } = opts;
-
-  const ledStrip = initStrip({
-    leds,
-    strip: 'grb'
-  });
-
-  const pixels = new Uint32Array(leds);
-  const colourInt = rgbToInt(colour);
-  const colourPixels = pixels.map(() => colourInt);
-
-  ledStrip.render(colourPixels);
-}
-
-main({
-  leds: 300,
-  colour: {
-    red: 0,
-    green: 0,
-    blue: 0
-  }
+const ledStrip = initStrip({
+  leds,
+  strip: 'grb'
 });
+
+const pixels = new Uint32Array(leds);
+const colourInt = rgbToInt(colour);
+const colourPixels = pixels.map(() => colourInt);
+
+ledStrip.render(colourPixels);

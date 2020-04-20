@@ -9,6 +9,7 @@
   "author": "Ben Allen",
   "license": "MIT",
   "dependencies": {
+    "@types/node": "^13.13.0",
     "rpi-ws281x": "^1.0.33"
   }
 }
